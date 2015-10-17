@@ -1,6 +1,6 @@
 ntrans
 ==============
-Micro wrapper for [translate-shell](https://github.com/soimort/translate-shell) with some features:
+Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) with some features:
 
 1. Determine direction of translation by current keyboard layout: en:ru <=> ru:en (used [xkblayout-state](https://github.com/nonpop/xkblayout-state)).
 2. Copy translation to clipboard (used xclip).
