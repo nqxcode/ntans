@@ -9,3 +9,12 @@ It provides the following:
 3. Send notify message.
 
 For phrase translation use quotes: ntrans "for example".
+
+## Installation
+
+Download the [executable](http://git.io/vCb3W) and place it into your path.
+
+```bash
+$ wget git.io/vCb3W -O ntrans 
+$ chmod +x ./ntrans
+```
