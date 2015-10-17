@@ -10,16 +10,14 @@ Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) w
 ## Installation
 
 Download the [executable](http://git.io/vCb3W) and place it into your path.
-
-### Dependencies
-1. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
-2. xclip.
-
-
 ```bash
 $ wget git.io/vCb3W -O ntrans 
 $ chmod +x ./ntrans
 ```
+### Dependencies
+1. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
+2. xclip.
+
 # Usage
 
 All samples see [here](https://github.com/soimort/translate-shell#introduction-by-examples).
