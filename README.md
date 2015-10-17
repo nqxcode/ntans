@@ -18,6 +18,6 @@ $ chmod +x ./ntrans
 1. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
 2. xclip.
 
-# Usage
+## Usage
 
 All samples see [here](https://github.com/soimort/translate-shell#introduction-by-examples).
