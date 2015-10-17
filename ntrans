@@ -3,7 +3,7 @@
 which xkblayout-state > /dev/null
 
 if [ $? -eq 0 ]; then
-    current_layout=`xkblayout-state print "%e"`    
+    current_layout=`xkblayout-state print "%e"`
     target_layout='ru'
 
     if [ $current_layout == 'ru' ]; then
@@ -11,12 +11,18 @@ if [ $? -eq 0 ]; then
     fi
 
     direction=":$target_layout"
-else 
-    echo "Install 'xkblayout-state' for automatically determine the direction of the translation."    
+else
+    echo "Install 'xkblayout-state' for automatically determine direction of translation."
 fi
 
 message=`trans $direction -b "${@:1:$#-1}" "${@: -1}"`
 
-echo $message | tr -d '\n' | xclip -selection c
-notify-send "$message"
+which xclip > /dev/null
 
+if [ $? -eq 0 ]; then
+    echo $message | tr -d '\n' | xclip -selection c
+else
+    echo "Install 'xclip' for copy translation to clipboard."
+fi
+
+notify-send "$message"
