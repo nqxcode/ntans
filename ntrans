@@ -1,0 +1,22 @@
+#!/bin/bash
+
+which xkblayout-state > /dev/null
+
+if [ $? -eq 0 ]; then
+    current_layout=`xkblayout-state print "%e"`    
+    target_layout='ru'
+
+    if [ $current_layout == 'ru' ]; then
+        target_layout='en'
+    fi
+
+    direction=":$target_layout"
+else 
+    echo "Install 'xkblayout-state' for automatically determine the direction of the translation."    
+fi
+
+message=`trans $direction -b "${@:1:$#-1}" "${@: -1}"`
+
+echo $message | tr -d '\n' | xclip -selection c
+notify-send "$message"
+
