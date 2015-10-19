@@ -15,7 +15,8 @@ $ wget git.io/vCb3W -O ntrans
 $ chmod +x ./ntrans
 ```
 ### Dependencies
-1. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
+1. [translate-shell](https://github.com/soimort/translate-shell) 
+2. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
 2. xclip.
 
 ## Usage
