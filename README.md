@@ -5,7 +5,6 @@ Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) w
 1. Determine direction of translation by current keyboard layout: en:ru <=> ru:en.
 2. Copy translation to clipboard.
 3. Send notify message.
-4. For **phrase** translation use quotes: ```ntrans "for example".```
 
 ## Installation
 
