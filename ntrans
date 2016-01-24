@@ -58,7 +58,16 @@ def main():
                                    usage="usage: %prog [-h] text",
                                    version="%prog {}".format(__version__))
 
+    parser.add_option("--update-trans", action="store_true", dest="update_trans")
+
     (options, args) = parser.parse_args()
+
+    if options.update_trans:
+        print('Updating trans...')
+        os.system('mkdir ~/bin')
+        os.system('rm ~/bin/trans > /dev/null 2>&1 ')
+        os.system('cd ~/bin && wget git.io/trans && chmod +x trans')
+        exit(0)
 
     if len(args) == 0:
         parser.print_help()
