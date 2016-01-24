@@ -1,28 +1,76 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-which xkblayout-state > /dev/null
+# ntrans - nano wrapper for translate-shell with some features:
+#
+#   1. Determine direction of translation by current keyboard layout: en:ru <=> ru:en.
+#   2. Copy translation to clipboard.
+#   3. Send notify message.
+#
 
-if [ $? -eq 0 ]; then
-    current_layout=`xkblayout-state print "%e"`
-    target_layout='ru'
+__version__ = "1.0"
 
-    if [ $current_layout == 'ru' ]; then
-        target_layout='en'
-    fi
+import os
+import sys
+import optparse
+from subprocess import check_output
 
-    direction=":$target_layout"
-else
-    echo "Install 'xkblayout-state' for automatically determine direction of translation."
-fi
 
-message=`trans $direction -b "${@:1:$#-1}" "${@: -1}"`
+def get_locale():
+    try:
+        locate = check_output(["xkblayout-state", "print", "%e"])
+    except FileNotFoundError:
+        print("Install 'xkblayout-state' for determine direction of translation.")
+        sys.exit(1)
+    return locate.decode("utf-8").strip()
 
-which xclip > /dev/null
 
-if [ $? -eq 0 ]; then
-    echo $message | tr -d '\n' | xclip -selection c
-else
-    echo "Install 'xclip' for copy translation to clipboard."
-fi
+def get_direction():
+    if get_locale() == 'us':
+        return 'en:ru'
 
-notify-send "$message"
+    return 'ru:en'
+
+
+def copy_to_clipboard(text):
+    os.system("echo '" + text + "' | tr -d '\n' | xclip -selection c")
+
+
+def notify_message(text):
+    os.system('notify-send "' + text + '"')
+
+
+def translate(text):
+    try:
+        return check_output(["trans", get_direction(), "-b", "%s" % text]).decode("utf-8")
+    except FileNotFoundError as e:
+        print("Install 'translate-shell' for text translation.")
+        sys.exit(1)
+
+
+def main():
+    optparse.OptionParser.format_description = lambda self, formatter: self.description
+    parser = optparse.OptionParser(description='Ntrans is nano wrapper for translate-shell with some features:\n'
+                                               '\t1. Determine direction of translation by current keyboard layout: '
+                                               'en:ru <=> ru:en.\n'
+                                               '\t2. Copy translation to clipboard.\n'
+                                               '\t3. Send notify message.\n'
+                                   ,
+                                   usage="usage: %prog [-h] text",
+                                   version="%prog {}".format(__version__))
+
+    (options, args) = parser.parse_args()
+
+    if len(args) == 0:
+        parser.print_help()
+        exit(0)
+
+    text = translate(' '.join(args))
+
+    copy_to_clipboard(text)
+    notify_message(text)
+
+    print(text)
+
+
+if __name__ == "__main__":
+    main()
