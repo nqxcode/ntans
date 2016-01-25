@@ -12,12 +12,12 @@ __version__ = "1.0"
 import os
 import sys
 import optparse
-from subprocess import check_output
+import subprocess
 
 
 def get_locale():
     try:
-        locate = check_output(["xkblayout-state", "print", "%e"])
+        locate = subprocess.check_output(["xkblayout-state", "print", "%e"])
     except FileNotFoundError:
         print("Install 'xkblayout-state' for determine direction of translation.")
         sys.exit(1)
@@ -41,7 +41,7 @@ def notify_message(text):
 
 def translate(text):
     try:
-        return check_output(["trans", get_direction(), "-b", "%s" % text]).decode("utf-8")
+        return subprocess.check_output(["trans", get_direction(), "-b", "%s" % text]).decode("utf-8")
     except FileNotFoundError as e:
         print("Install 'translate-shell' for text translation.")
         sys.exit(1)
@@ -49,7 +49,7 @@ def translate(text):
 
 def main():
     optparse.OptionParser.format_description = lambda self, formatter: self.description
-    parser = optparse.OptionParser(description='Ntrans is nano wrapper for translate-shell with some features:\n'
+    parser = optparse.OptionParser(description='ntrans is nano wrapper for translate-shell with some features:\n'
                                                '\t1. Determine direction of translation by current keyboard layout: '
                                                'en:ru <=> ru:en.\n'
                                                '\t2. Copy translation to clipboard.\n'
@@ -58,7 +58,11 @@ def main():
                                    usage="usage: %prog [-h] text",
                                    version="%prog {}".format(__version__))
 
-    parser.add_option("--update-trans", action="store_true", dest="update_trans")
+    parser.add_option("--trans-update", action="store_true", dest="trans_update",
+                      help="update translate shell to the latest version")
+
+    parser.add_option("--self-update", action="store_true", dest="self_update",
+                      help="update ntrans to the latest version")
 
     (options, args) = parser.parse_args()
 
@@ -67,6 +71,13 @@ def main():
         os.system('mkdir ~/bin > /dev/null 2>&1')
         os.system('rm ~/bin/trans > /dev/null 2>&1 ')
         os.system('cd ~/bin && wget git.io/trans && chmod +x trans')
+        exit(0)
+
+    if options.self_update:
+        print('Self updating...')
+        os.system('mkdir ~/bin > /dev/null 2>&1')
+        os.system('rm ~/bin/ntrans > /dev/null 2>&1 ')
+        os.system('cd ~/bin && wget git.io/vCb3W -O ntrans && chmod +x ntrans')
         exit(0)
 
     if len(args) == 0:
