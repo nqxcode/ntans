@@ -68,16 +68,29 @@ def main():
 
     if options.trans_update:
         print('Updating trans...')
-        os.system('mkdir ~/bin > /dev/null 2>&1')
-        os.system('rm ~/bin/trans > /dev/null 2>&1 ')
-        os.system('cd ~/bin && wget git.io/trans && chmod +x trans')
-        exit(0)
+
+        try:
+            file_path = subprocess.check_output(["which", "trans"]).strip().decode("utf-8")
+            dir_path = os.path.dirname(file_path)
+
+            os.system('rm {}'.format(file_path))
+            os.system('cd {} && wget git.io/trans && chmod +x trans'.format(dir_path))
+
+            exit(0)
+
+        except subprocess.CalledProcessError as ex:
+            print(ex)
+            exit(1)
 
     if options.self_update:
         print('Self updating...')
-        os.system('mkdir ~/bin > /dev/null 2>&1')
-        os.system('rm ~/bin/ntrans > /dev/null 2>&1 ')
-        os.system('cd ~/bin && wget git.io/vCb3W -O ntrans && chmod +x ntrans')
+
+        file_path = os.path.realpath(__file__)
+        dir_path = os.path.dirname(file_path)
+        base_filename = os.path.basename(__file__)
+
+        os.system('rm {}'.format(file_path))
+        os.system('cd {} && wget git.io/vCb3W -O ntrans && chmod +x {}'.format(dir_path, base_filename))
         exit(0)
 
     if len(args) == 0:
