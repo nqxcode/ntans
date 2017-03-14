@@ -2,7 +2,7 @@ ntrans
 ==============
 Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) with some features:
 
-1. Determine direction of translation by current keyboard layout: en:ru <=> ru:en.
+1. Determine direction of translation by current keyboard layout: **en**:**rus** <=> **rus**:**en**.
 2. Copy translation to clipboard.
 3. Send notify message.
 
