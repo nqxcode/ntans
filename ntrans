@@ -13,6 +13,51 @@ import os
 import sys
 import optparse
 import subprocess
+from sqlalchemy import *
+from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy.orm import mapper
+from sqlalchemy.orm.session import sessionmaker
+
+
+class Dictionary:
+    class Dictionary:
+        id = Column(Integer, primary_key=True)
+        original = Column(String(100), unique=True)
+        translated = Column(String(100), unique=True)
+
+        def __init__(self, original, translated):
+            self.original = original
+            self.translated = translated
+
+        def __repr__(self):
+            return '%s %s %s' % (self.id, self.original, self.translated)
+
+    def __init__(self):
+        self.engine = create_engine('sqlite:///dictionary.db')
+        self.meta = MetaData(bind=self.engine, reflect=True)
+
+        try:
+            self.dictionary = Table('dictionary', self.meta, autoload=True)
+
+        except NoSuchTableError:
+            self.dictionary = Table('dictionary', self.meta,
+                                    Column('id', Integer, primary_key=True),
+                                    Column('original', String(100)),
+                                    Column('translated', String(100)),
+                                    )
+
+            self.dictionary.create()
+
+        mapper(self.Dictionary, self.dictionary)
+        Session = sessionmaker(bind=self.engine)
+
+        self.session = Session()
+
+    def save(self, original, translated):
+        obj = self.Dictionary(original=original, translated=translated)
+
+        self.session.add(obj)
+        self.session.commit()
 
 
 def get_locale():
@@ -33,6 +78,10 @@ def get_direction():
 
 def copy_to_clipboard(text):
     os.system("echo '" + text + "' | tr -d '\n' | xclip -selection c")
+
+
+def save_to_database(original, translated):
+    (Dictionary()).save(original, translated)
 
 
 def notify_message(text):
@@ -97,12 +146,14 @@ def main():
         parser.print_help()
         exit(0)
 
-    text = translate(' '.join(args))
+    original = ' '.join(args)
+    translated = translate(original)
 
-    copy_to_clipboard(text)
-    notify_message(text)
+    copy_to_clipboard(translated)
+    save_to_database(original, translated)
+    notify_message(translated)
 
-    print(text)
+    print(translated)
 
 
 if __name__ == "__main__":
