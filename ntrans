@@ -99,6 +99,8 @@ def main():
                                                '**en**:**rus** <=> **rus**:**en**.\n'
                                                '\t2. Copy translation to clipboard.\n'
                                                '\t3. Send notify message.\n'
+                                               '\t4. Grab statistics of translated texts into '
+                                               '~/Dropbox/Public/dictionary.db.\n'
                                    ,
                                    usage="usage: %prog [-h] text",
                                    version="%prog {}".format(__version__))
