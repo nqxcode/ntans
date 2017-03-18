@@ -16,6 +16,7 @@ $ chmod +x ./ntrans
 ### Dependencies
 1. [translate-shell](https://github.com/soimort/translate-shell)
 2. xclip.
+3. sqlalchemy.
 
 ## Usage
 
