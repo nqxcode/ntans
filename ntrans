@@ -18,7 +18,7 @@ from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import mapper
 from sqlalchemy.orm.session import sessionmaker
 import re
-
+from os.path import expanduser
 
 class Dictionary:
     class Dictionary:
@@ -35,7 +35,7 @@ class Dictionary:
             return '%s %s %s %s' % (self.id, self.original, self.translated, self.direction)
 
     def __init__(self):
-        self.engine = create_engine('sqlite:///dictionary.db')
+        self.engine = create_engine('sqlite:///' + expanduser("~") + '/Dropbox/Public/dictionary.db')
         self.meta = MetaData(bind=self.engine, reflect=True)
 
         try:
