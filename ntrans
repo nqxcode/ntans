@@ -96,7 +96,7 @@ def main():
     optparse.OptionParser.format_description = lambda self, formatter: self.description
     parser = optparse.OptionParser(description='ntrans is nano wrapper for translate-shell with some features:\n'
                                                '\t1. Auto determine direction of translation: '
-                                               '**en**:**rus** <=> **rus**:**en**.\n'
+                                               'en:rus <=> rus:en.\n'
                                                '\t2. Copy translation to clipboard.\n'
                                                '\t3. Send notify message.\n'
                                                '\t4. Grab statistics of translated texts into '
