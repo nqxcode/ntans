@@ -17,6 +17,7 @@ from sqlalchemy import *
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import mapper
 from sqlalchemy.orm.session import sessionmaker
+import re
 
 
 class Dictionary:
@@ -25,12 +26,13 @@ class Dictionary:
         original = Column(String(100), unique=True)
         translated = Column(String(100), unique=True)
 
-        def __init__(self, original, translated):
+        def __init__(self, original, translated, direction):
             self.original = original
             self.translated = translated
+            self.direction = direction
 
         def __repr__(self):
-            return '%s %s %s' % (self.id, self.original, self.translated)
+            return '%s %s %s %s' % (self.id, self.original, self.translated, self.direction)
 
     def __init__(self):
         self.engine = create_engine('sqlite:///dictionary.db')
@@ -44,6 +46,7 @@ class Dictionary:
                                     Column('id', Integer, primary_key=True),
                                     Column('original', String(100)),
                                     Column('translated', String(100)),
+                                    Column('direction', String(100)),
                                     )
 
             self.dictionary.create()
@@ -53,24 +56,17 @@ class Dictionary:
 
         self.session = Session()
 
-    def save(self, original, translated):
-        obj = self.Dictionary(original=original, translated=translated)
+    def save(self, original, translated, direction):
+        obj = self.Dictionary(original=original, translated=translated, direction=direction)
 
         self.session.add(obj)
         self.session.commit()
 
 
-def get_locale():
-    try:
-        locate = subprocess.check_output(["xkblayout-state", "print", "%e"])
-    except FileNotFoundError:
-        print("Install 'xkblayout-state' for determine direction of translation.")
-        sys.exit(1)
-    return locate.decode("utf-8").strip()
+def get_direction(text):
+    en = re.match(r'[a-zA-z]+', text)
 
-
-def get_direction():
-    if get_locale() == 'us':
+    if en is not None:
         return 'en:ru'
 
     return 'ru:en'
@@ -81,7 +77,7 @@ def copy_to_clipboard(text):
 
 
 def save_to_database(original, translated):
-    (Dictionary()).save(original, translated)
+    (Dictionary()).save(original, translated, get_direction(original))
 
 
 def notify_message(text):
@@ -90,7 +86,7 @@ def notify_message(text):
 
 def translate(text):
     try:
-        return subprocess.check_output(["trans", get_direction(), "-b", "%s" % text]).decode("utf-8")
+        return subprocess.check_output(["trans", get_direction(text), "-b", "%s" % text]).decode("utf-8")
     except FileNotFoundError as e:
         print("Install 'translate-shell' for text translation.")
         sys.exit(1)

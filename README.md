@@ -2,7 +2,7 @@ ntrans
 ==============
 Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) with some features:
 
-1. Determine direction of translation by current keyboard layout: **en**:**rus** <=> **rus**:**en**.
+1. Auto determine direction of translation: **en**:**rus** <=> **rus**:**en**.
 2. Copy translation to clipboard.
 3. Send notify message.
 
@@ -14,8 +14,7 @@ $ wget git.io/vCb3W -O ntrans
 $ chmod +x ./ntrans
 ```
 ### Dependencies
-1. [translate-shell](https://github.com/soimort/translate-shell) 
-2. [xkblayout-state](https://github.com/nonpop/xkblayout-state).
+1. [translate-shell](https://github.com/soimort/translate-shell)
 2. xclip.
 
 ## Usage
