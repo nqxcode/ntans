@@ -24,8 +24,9 @@ from os.path import expanduser
 class Dictionary:
     class Dictionary:
         id = Column(Integer, primary_key=True)
-        original = Column(String(100), unique=True)
-        translated = Column(String(100), unique=True)
+        original = Column(String())
+        translated = Column(String())
+        direction = Column(String())
 
         def __init__(self, original, translated, direction):
             self.original = original
@@ -40,19 +41,19 @@ class Dictionary:
         self.meta = MetaData(bind=self.engine, reflect=True)
 
         try:
-            self.dictionary = Table('dictionary', self.meta, autoload=True)
+            self.table = Table('dictionary', self.meta, autoload=True)
 
         except NoSuchTableError:
-            self.dictionary = Table('dictionary', self.meta,
-                                    Column('id', Integer, primary_key=True),
-                                    Column('original', String(100)),
-                                    Column('translated', String(100)),
-                                    Column('direction', String(100)),
-                                    )
+            self.table = Table('dictionary', self.meta,
+                               Column('id', Integer, primary_key=True),
+                               Column('original', String()),
+                               Column('translated', String()),
+                               Column('direction', String()),
+                               )
 
-            self.dictionary.create()
+            self.table.create()
 
-        mapper(self.Dictionary, self.dictionary)
+        mapper(self.Dictionary, self.table)
         Session = sessionmaker(bind=self.engine)
 
         self.session = Session()
