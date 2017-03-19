@@ -2,9 +2,10 @@
 
 # ntrans - nano wrapper for translate-shell with some features:
 #
-#   1. Determine direction of translation by current keyboard layout: en:ru <=> ru:en.
+#   1. Auto determine direction of translation: en:rus <=> rus:en.
 #   2. Copy translation to clipboard.
 #   3. Send notify message.
+#   4. Grab statistics of translated texts into ~/Dropbox/Public/dictionary.db.
 #
 
 __version__ = "1.0"
