@@ -5,7 +5,7 @@ Nano wrapper for [translate-shell](https://github.com/soimort/translate-shell) w
 1. Auto determine direction of translation: **en**:**rus** <=> **rus**:**en**.
 2. Copy translation to clipboard.
 3. Send notify message.
-4. Grab statistics of translated texts ~/Dropbox/Public/dictionary.db.
+4. Grab statistics of translated texts into ~/Dropbox/Public/dictionary.db.
 
 ## Installation
 
