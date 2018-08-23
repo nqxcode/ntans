@@ -136,7 +136,7 @@ def main():
 
         file_path = os.path.realpath(__file__)
         dir_path = os.path.dirname(file_path)
-        base_filename = os.path.basename(__file__)
+        base_filename = os.path.basename(file_path)
 
         os.system('rm {}'.format(file_path))
         os.system('cd {} && wget git.io/vCb3W -O ntrans && chmod +x {}'.format(dir_path, base_filename))
