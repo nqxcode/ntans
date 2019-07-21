@@ -8,7 +8,7 @@
 #   4. Grab statistics of translated texts into ~/Dropbox/Public/dictionary.db.
 #
 
-__version__ = "1.1"
+__version__ = "1.1.1"
 
 import os
 import sys
@@ -88,7 +88,7 @@ def notify_message(text):
 
 def translate(text):
     try:
-        return subprocess.check_output(["trans", get_direction(text), "-b", "%s" % text]).decode("utf-8")
+        return subprocess.check_output(["trans", get_direction(text), "-b", "-e google", "%s" % text]).decode("utf-8")
     except FileNotFoundError as e:
         print("Install 'translate-shell' for text translation.")
         sys.exit(1)
