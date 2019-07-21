@@ -88,7 +88,7 @@ def notify_message(text):
 
 def translate(text):
     try:
-        return subprocess.check_output(["trans", get_direction(text), "-b", "-e google", "%s" % text]).decode("utf-8")
+        return subprocess.check_output(["trans", "{0} -b -e google {1}".format(get_direction(text), text)]).decode("utf-8")
     except FileNotFoundError as e:
         print("Install 'translate-shell' for text translation.")
         sys.exit(1)
