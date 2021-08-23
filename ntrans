@@ -38,7 +38,7 @@ class Dictionary:
 
     def __init__(self):
         self.engine = create_engine('sqlite:///' + expanduser("~") + '/Dropbox/Public/dictionary.db')
-        self.meta = MetaData(bind=self.engine, reflect=True)
+        self.meta = MetaData(bind=self.engine)
 
         try:
             self.table = Table('dictionary', self.meta, autoload=True)
